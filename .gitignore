@@ -4,3 +4,6 @@ obj/
 packages/
 **_bak**/
 unpacked/
+__pycache__/
+arukana/
+*.pyc
