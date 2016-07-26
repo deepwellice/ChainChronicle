@@ -7,6 +7,7 @@ class PathFinder:
         self.unpack_dir = ''
         self.db_path = ''
         self.arukana_dir = ''
+        self.arukana_history_path = ''
 
     def get_data_folder(self):
         if len(self.data_dir) == 0:
@@ -41,3 +42,10 @@ class PathFinder:
         if not os.path.exists(self.arukana_dir):
             os.makedirs(self.arukana_dir, exist_ok=True)
         return self.arukana_dir
+
+    def get_arukana_download_history_path(self):
+        if len(self.arukana_history_path) == 0:
+            arukana_folder = self.get_arukana_folder()
+            self.arukana_history_path = os.path.join(arukana_folder,
+                                                     'arukana_history.txt')
+        return self.arukana_history_path

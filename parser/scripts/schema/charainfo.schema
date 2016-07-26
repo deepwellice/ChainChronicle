@@ -101,7 +101,8 @@
         "skillflag1_0": "INT",
         "skillflag1_1": "INT",
         "skill1": "INT",
-        "skill2": "INT"
+        "skill2": "INT",
+        "update_time": "TEXT"
     }
 }
 

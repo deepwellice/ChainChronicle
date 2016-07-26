@@ -6,4 +6,6 @@ packages/
 unpacked/
 __pycache__/
 arukana/
+
+*_bak.*
 *.pyc
