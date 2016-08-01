@@ -3,6 +3,7 @@
 
 from arukana import ArukanaDownloader
 from chara import CharaInfoParser, CharaInfoDB
+form drama import DramaParser
 
 def parse_chara_info():
     charainfo_parser = CharaInfoParser()
@@ -18,6 +19,10 @@ def parse_chara_info():
             break
         arukana_downloader.download(cid)
         charainfo_db.insert_data(charainfo)
+
+def parse_drama():
+    drama_parser = DramaParser()
+    drama_parse.parse()
 
 if __name__ == "__main__":
     parse_chara_info()

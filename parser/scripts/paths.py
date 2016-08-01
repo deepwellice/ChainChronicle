@@ -38,3 +38,15 @@ class PathFinder:
         arukana_history_path = os.path.join(arukana_folder,
                                             'arukana_history.txt')
         return arukana_history_path
+
+    def get_dramas_folder(self):
+        data_dir = self.get_data_folder()
+        drama_dir = os.path.join(data_dir, 'dramas')
+        if not os.path.exists(drama_dir):
+            os.makedirs(drama_dir, exist_ok=True)
+        return drama_dir
+
+    def get_dramas_history_path(self):
+        dramas_dir = self.get_dramas_folder()
+        history_path = os.path.join(dramas_dir, 'dramas_history.txt')
+        return history_path
