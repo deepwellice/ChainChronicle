@@ -20,7 +20,10 @@ class ArukanaDownloader:
         local_path = os.path.join(self.download_folder,
                                   '{0:05d}.scr'.format(cid))
         if os.path.exists(local_path):
+            print("download skipped: {0}".format(cid))
             return 304
+
+        print("download started: {0}".format(cid))
         download_url = '{0}cha_2d_card_{1:05d}.scr'.format(self.url, cid)
         retry_count = 10
         while retry_count > 0:
@@ -30,6 +33,7 @@ class ArukanaDownloader:
                                                  timeout=180)
                 ret_code = download_response.status_code
                 if ret_code != 200:
+                    print("downaload failure: {0}".format(ret_code))
                     return ret_code
                 with open(local_path, 'wb') as local_fd:
                     for chunk in download_response.iter_content(1024):
@@ -38,8 +42,8 @@ class ArukanaDownloader:
                 print('Download successfully: {0}'.format(cid))
                 return ret_code
             except requests.RequestException:
-                print('Download timeout: {0}'.format(cid))
                 continue
+        print('Download timeout: {0}'.format(cid))
         return ret_code
 
     def init_history(self):
