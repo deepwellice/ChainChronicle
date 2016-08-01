@@ -63,5 +63,5 @@ class ArukanaDownloader:
 
 if __name__ == "__main__":
     test_downloader = ArukanaDownloader()
-    for cid in range(111, 120):
-        test_downloader.log_history(cid)
+    for cid in range(1, 70001):
+        test_downloader.download(cid)
