@@ -17,12 +17,19 @@ class ArukanaDownloader:
         self.token = datetime.datetime.utcnow().strftime('%Y%m%d%H%M%S')
         self.json = None
         self.log_lock = threading.Lock()
+        self.thread_list = []
 
     def download_all(self, cid_range):
         for cid in cid_range:
-            threading.Thread(target=self.download,
-                             args=(range(cid, cid+1)),
-                             daemon=True).start()
+            download_thread = threading.Thread(target=self.download,
+                                               args=(range(cid, cid+1)))
+            download_thread.start()
+            self.thread_list.append(download_thread)
+            if len(self.thread_list)==10:
+                for td in self.thread_list:
+                    if td.is_alive():
+                        td.join()
+                self.thread_list.clear()
 
     def download(self, cid):
         local_path = os.path.join(self.download_folder,
@@ -40,6 +47,7 @@ class ArukanaDownloader:
                 download_response = requests.get(download_url, stream=True,
                                                  timeout=180)
                 ret_code = download_response.status_code
+                return
                 if ret_code != 200:
                     print("downaload failure: {0}".format(ret_code))
                     return ret_code
