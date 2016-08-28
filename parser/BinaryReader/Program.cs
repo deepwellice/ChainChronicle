@@ -8,6 +8,37 @@ namespace BinaryReader
 {
     class Program
     {
+        public static void DecodeXorData(ref byte[] from)
+        {
+            if (from.Length <= 8)
+            {
+                return;
+            }
+            byte[] key = new byte[11];
+            key[0] = 0x55;
+            key[1] = 0x6E;
+            key[2] = 0x69;
+            key[3] = 0x74;
+            key[4] = 0x79;
+            key[5] = 0x57;
+            key[6] = 0x65;
+            key[7] = 0x62;
+            key[8] = 0x00;
+            key[9] = 0x00;
+            key[10] = 0x00;
+            for (int i = 0; i < key.Length; i++)
+            {
+                key[i] ^= from[i];
+            }
+            int len = from.Length;
+            if (len > 256)
+                len = 256;
+            for (int i = 0; i < len; i++)
+            {
+                from[i] ^= key[i % 11];
+            }
+        }
+
         //static string dataPath = "E:\\CodeDepot\\ChainChronicle\\ccdatareader\\data\\jp";
         //static string extactDataPath = "E:\\CodeDepot\\ChainChronicle\\ccdatareader\\extracteddata";
         static string strBinaryDataFolder;
@@ -73,16 +104,20 @@ namespace BinaryReader
             }
         }
 
-        static void convert_charainfo_data()
+        static void decode_BGM()
         {
-            string charainfoDataFilePath = strUnpackedDataFolder + "\\charainfo_jp.json";
-
+            string bgm_path = "E:\\CodeDepot\\Github\\ChainChronicle\\data\\packed\\jp\\BGM_SAKURA_002.bdl";
+            string bgm_path_decode = "E:\\CodeDepot\\Github\\ChainChronicle\\data\\packed\\jp\\BGM_SAKURA_002.assets";
+            byte[] bgm_data = File.ReadAllBytes(bgm_path);
+            DecodeXorData(ref bgm_data);
+            FileStream fout = File.Create(bgm_path_decode);
+            fout.Write(bgm_data, 0, bgm_data.Length);
         }
 
         static void Main(string[] args)
         {
             convert_json();
-            convert_charainfo_data();
+            //decode_BGM();
         }
     }
 }
