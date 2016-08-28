@@ -91,7 +91,6 @@ class CharaInfoDB:
         select_sql = 'SELECT * from charainfo where cid = {0}'.format(cid)
         self.__db_cur.execute(select_sql)
         if self.__db_cur.fetchone() is not None:
-            print('exists in database: {0}'.format(cid))
             return
         colnames, colvalues = self.__get_charainfo_data(charainfo)
         insert_sql = 'INSERT OR REPLACE INTO charainfo ('
@@ -124,3 +123,18 @@ class CharaInfoParser:
         if type(charainfo_list) is not list:
             return None
         return charainfo_list
+
+def parse_chara_info():
+    charainfo_parser = CharaInfoParser()
+    charainfo_db = CharaInfoDB()
+
+    charainfo_list = charainfo_parser.get_charainfo_list()
+    for charainfo in charainfo_list:
+        if type(charainfo) is not dict:
+            continue
+        if charainfo['cid'] > 70000:
+            continue
+        charainfo_db.insert_data(charainfo)
+
+if __name__ == "__main__":
+    parse_chara_info()
